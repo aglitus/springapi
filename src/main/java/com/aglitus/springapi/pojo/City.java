@@ -8,23 +8,29 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="categories")
-public class Category {
+@Table(name = "cities")
+public class City {
 
-	@Id
+    @Id
     @Column(name = "id", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
- 	private String description;
+    private String description;
 
-	@OneToMany(mappedBy = "category")
-    @JsonManagedReference(value="category-product")
-	private List<Product> products;
-    
+    private String state;
+
+    @OneToMany(mappedBy = "city")
+    @JsonManagedReference(value="user-city")
+    private List<User> users;
+
+    @OneToMany(mappedBy = "city")
+    @JsonManagedReference(value="provider-city")
+    private List<Provider> providers;
+
 }

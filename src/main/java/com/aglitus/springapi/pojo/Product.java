@@ -1,30 +1,48 @@
 package com.aglitus.springapi.pojo;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
-@Table(name="products")
+@Table(name = "products")
+public class Product {
 
-public class Product extends AbstractEntity<Integer> {
-    
-    @Column(length = 150, nullable = false)
-	@Getter @Setter private String name;
-	
+	@Id
+    @Column(name = "id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+	@Column(length = 150, nullable = false)
+	private String name;
+
 	@Column(nullable = true)
-	@Getter @Setter private int quantity;
+	private int quantity;
 
-	@Column(nullable=false)
-	@Getter @Setter private BigDecimal unitaryPrice;
-	
+	@Column(nullable = false)
+	private BigDecimal unitaryPrice;
+
+	@JsonBackReference(value="category-product")
 	@ManyToOne
-	@JoinColumn(name="category_id")
-	@Getter @Setter private Category category;
-	
-	// @ManyToOne
-	// @JoinColumn(name="idfornecedor")
-	// private Fornecedor fornecedor;
-    
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@JsonBackReference(value="provider-product")
+	@ManyToOne
+	@JoinColumn(name = "provider_id")
+	private Provider provider;
+
+    @JsonManagedReference(value="product-products_sales")
+	@OneToMany(mappedBy = "product")
+	private List<ProductSale> products_sales;
+
 }

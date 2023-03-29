@@ -8,23 +8,23 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="categories")
-public class Category {
+@Table(name = "userTypes")
+public class UserType {
 
-	@Id
+    @Id
     @Column(name = "id", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 150, nullable = false)
- 	private String description;
+    private String description;
 
-	@OneToMany(mappedBy = "category")
-    @JsonManagedReference(value="category-product")
-	private List<Product> products;
-    
+    @OneToMany(mappedBy = "userType")
+    @JsonManagedReference(value = "userType-user")
+    private List<User> user;
 }

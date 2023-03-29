@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.aglitus.springapi.dao.CategoryDAO;
-import com.aglitus.springapi.pojo.Category;
+import com.aglitus.springapi.dao.ProviderDAO;
+import com.aglitus.springapi.pojo.Provider;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/provider")
+public class ProviderController {
 
     @Autowired
-    private CategoryDAO dao;
+    private ProviderDAO dao;
 
     @PostMapping("/")
-    public ResponseEntity<Category> save(@RequestBody Category obj) {
+    public ResponseEntity<Provider> save(@RequestBody Provider obj) {
 
         try {
-            return new ResponseEntity<Category>(dao.save(obj), HttpStatus.OK);
+            return new ResponseEntity<Provider>(dao.save(obj), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -36,10 +36,10 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Category>> list() {
+    public ResponseEntity<List<Provider>> list() {
 
         try {
-            List<Category> repository = dao.findAll();
+            List<Provider> repository = dao.findAll();
             return new ResponseEntity<>(repository, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,50 +47,50 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> get(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Provider> get(@PathVariable(value = "id") int id) {
 
         try {
-            Optional<Category> Category = dao.findById(id);
-            return new ResponseEntity<Category>(Category.get(), HttpStatus.OK);
+            Optional<Provider> Provider = dao.findById(id);
+            return new ResponseEntity<Provider>(Provider.get(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable(value = "id") int id, @RequestBody Category obj) {
+    public ResponseEntity<Provider> update(@PathVariable(value = "id") int id, @RequestBody Provider obj) {
 
         try {
-            Optional<Category> Category = dao.findById(id);
+            Optional<Provider> Provider = dao.findById(id);
 
-            if (Category.isEmpty()) {
+            if (Provider.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             } else {
-                obj.setId(Category.get().getId());
-                return new ResponseEntity<Category>(dao.save(obj), HttpStatus.OK);
+                obj.setId(Provider.get().getId());
+                return new ResponseEntity<Provider>(dao.save(obj), HttpStatus.OK);
             }
 
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> delete(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Provider> delete(@PathVariable(value = "id") int id) {
 
         try {
 
-            Optional<Category> Category = dao.findById(id);
-            if (Category.isEmpty()) {
+            Optional<Provider> Provider = dao.findById(id);
+            if (Provider.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                dao.delete(Category.get());
+                dao.delete(Provider.get());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
 
         }
 

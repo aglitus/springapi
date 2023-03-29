@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.aglitus.springapi.dao.CategoryDAO;
-import com.aglitus.springapi.pojo.Category;
+import com.aglitus.springapi.dao.CityDAO;
+import com.aglitus.springapi.pojo.City;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/city")
+public class CityController {
 
     @Autowired
-    private CategoryDAO dao;
+    private CityDAO dao;
 
     @PostMapping("/")
-    public ResponseEntity<Category> save(@RequestBody Category obj) {
+    public ResponseEntity<City> save(@RequestBody City obj) {
 
         try {
-            return new ResponseEntity<Category>(dao.save(obj), HttpStatus.OK);
+            return new ResponseEntity<City>(dao.save(obj), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -36,10 +36,10 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Category>> list() {
+    public ResponseEntity<List<City>> list() {
 
         try {
-            List<Category> repository = dao.findAll();
+            List<City> repository = dao.findAll();
             return new ResponseEntity<>(repository, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,50 +47,50 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> get(@PathVariable(value = "id") int id) {
+    public ResponseEntity<City> get(@PathVariable(value = "id") int id) {
 
         try {
-            Optional<Category> Category = dao.findById(id);
-            return new ResponseEntity<Category>(Category.get(), HttpStatus.OK);
+            Optional<City> City = dao.findById(id);
+            return new ResponseEntity<City>(City.get(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<City>(HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable(value = "id") int id, @RequestBody Category obj) {
+    public ResponseEntity<City> update(@PathVariable(value = "id") int id, @RequestBody City obj) {
 
         try {
-            Optional<Category> Category = dao.findById(id);
+            Optional<City> City = dao.findById(id);
 
-            if (Category.isEmpty()) {
+            if (City.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             } else {
-                obj.setId(Category.get().getId());
-                return new ResponseEntity<Category>(dao.save(obj), HttpStatus.OK);
+                obj.setId(City.get().getId());
+                return new ResponseEntity<City>(dao.save(obj), HttpStatus.OK);
             }
 
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<City>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> delete(@PathVariable(value = "id") int id) {
+    public ResponseEntity<City> delete(@PathVariable(value = "id") int id) {
 
         try {
 
-            Optional<Category> Category = dao.findById(id);
-            if (Category.isEmpty()) {
+            Optional<City> City = dao.findById(id);
+            if (City.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                dao.delete(Category.get());
+                dao.delete(City.get());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity<Category>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<City>(HttpStatus.BAD_REQUEST);
 
         }
 
