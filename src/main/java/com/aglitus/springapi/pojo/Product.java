@@ -5,8 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "products")
+
 public class Product {
 
 	@Id
@@ -22,14 +24,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank(message = "Name is mandatory")
 	@Column(length = 150, nullable = false)
 	private String name;
 
 	@Column(nullable = true)
 	private int quantity;
 
+	@NotNull(message = "Price is mandatory")
 	@Column(nullable = false)
 	private BigDecimal unitaryPrice;
+
+	@Column(length = 300)
+	private String image;
 
 	@JsonBackReference(value="category-product")
 	@ManyToOne

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.UserDAO;
 import com.aglitus.springapi.pojo.User;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -24,8 +26,8 @@ public class UserController {
     @Autowired
     private UserDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<User> save(@RequestBody User obj) {
+    @PostMapping("")
+    public ResponseEntity<User> save(@Valid @RequestBody User obj) {
 
         try {
             return new ResponseEntity<User>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<User>> list() {
 
         try {
@@ -59,7 +61,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable(value = "id") int id, @RequestBody User obj) {
+    public ResponseEntity<User> update(@PathVariable(value = "id") int id, @Valid @RequestBody User obj) {
 
         try {
             Optional<User> User = dao.findById(id);

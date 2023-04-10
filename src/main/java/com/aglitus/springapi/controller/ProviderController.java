@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.ProviderDAO;
 import com.aglitus.springapi.pojo.Provider;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/provider")
 public class ProviderController {
@@ -24,8 +26,8 @@ public class ProviderController {
     @Autowired
     private ProviderDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<Provider> save(@RequestBody Provider obj) {
+    @PostMapping("")
+    public ResponseEntity<Provider> save(@Valid @RequestBody Provider obj) {
 
         try {
             return new ResponseEntity<Provider>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class ProviderController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Provider>> list() {
 
         try {
@@ -59,7 +61,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Provider> update(@PathVariable(value = "id") int id, @RequestBody Provider obj) {
+    public ResponseEntity<Provider> update(@PathVariable(value = "id") int id, @Valid @RequestBody Provider obj) {
 
         try {
             Optional<Provider> Provider = dao.findById(id);

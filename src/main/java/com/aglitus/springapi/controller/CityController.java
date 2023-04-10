@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.CityDAO;
 import com.aglitus.springapi.pojo.City;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/city")
 public class CityController {
@@ -24,8 +26,8 @@ public class CityController {
     @Autowired
     private CityDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<City> save(@RequestBody City obj) {
+    @PostMapping("")
+    public ResponseEntity<City> save(@Valid @RequestBody City obj) {
 
         try {
             return new ResponseEntity<City>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class CityController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<City>> list() {
 
         try {
@@ -59,7 +61,7 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<City> update(@PathVariable(value = "id") int id, @RequestBody City obj) {
+    public ResponseEntity<City> update(@PathVariable(value = "id") int id, @Valid @RequestBody City obj) {
 
         try {
             Optional<City> City = dao.findById(id);

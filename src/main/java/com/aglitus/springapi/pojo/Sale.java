@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -33,6 +34,7 @@ public class Sale {
     private User user;
 
     @Column(nullable = false, columnDefinition = "DATE")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate saleDate;
 
     @OneToMany(mappedBy = "sale")

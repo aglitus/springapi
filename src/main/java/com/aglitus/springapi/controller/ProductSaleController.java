@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.ProductSaleDAO;
 import com.aglitus.springapi.pojo.ProductSale;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/productSale")
 public class ProductSaleController {
@@ -24,8 +26,8 @@ public class ProductSaleController {
     @Autowired
     private ProductSaleDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<ProductSale> save(@RequestBody ProductSale obj) {
+    @PostMapping("")
+    public ResponseEntity<ProductSale> save(@Valid @RequestBody ProductSale obj) {
 
         try {
             return new ResponseEntity<ProductSale>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class ProductSaleController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<ProductSale>> list() {
 
         try {
@@ -59,7 +61,7 @@ public class ProductSaleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductSale> update(@PathVariable(value = "id") int id, @RequestBody ProductSale obj) {
+    public ResponseEntity<ProductSale> update(@PathVariable(value = "id") int id, @Valid @RequestBody ProductSale obj) {
 
         try {
             Optional<ProductSale> ProductSale = dao.findById(id);
@@ -78,7 +80,7 @@ public class ProductSaleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductSale> delete(@PathVariable(value = "id") int id) {
+    public ResponseEntity<ProductSale> delete(@Valid @PathVariable(value = "id") int id) {
 
         try {
 

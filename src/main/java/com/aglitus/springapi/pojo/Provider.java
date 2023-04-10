@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,12 +23,15 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     @Column(length = 150, nullable = false)
     private String name;
 
+    @NotBlank(message = "Document is mandatory")
     @Column(length = 150, nullable = false)
     private String document;
 
+    @NotBlank(message = "Address is mandatory")
     @Column(length = 300, nullable = false)
     private String address;
 

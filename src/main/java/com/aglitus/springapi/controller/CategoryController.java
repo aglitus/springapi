@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.CategoryDAO;
 import com.aglitus.springapi.pojo.Category;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -24,8 +26,8 @@ public class CategoryController {
     @Autowired
     private CategoryDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<Category> save(@RequestBody Category obj) {
+    @PostMapping("")
+    public ResponseEntity<Category> save(@Valid @RequestBody Category obj) {
 
         try {
             return new ResponseEntity<Category>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class CategoryController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Category>> list() {
 
         try {

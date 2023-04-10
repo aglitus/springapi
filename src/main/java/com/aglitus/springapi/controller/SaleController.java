@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.SaleDAO;
 import com.aglitus.springapi.pojo.Sale;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/sale")
 public class SaleController {
@@ -24,8 +26,8 @@ public class SaleController {
     @Autowired
     private SaleDAO dao;
 
-    @PostMapping("/")
-    public ResponseEntity<Sale> save(@RequestBody Sale obj) {
+    @PostMapping("")
+    public ResponseEntity<Sale> save(@Valid @RequestBody Sale obj) {
 
         try {
             return new ResponseEntity<Sale>(dao.save(obj), HttpStatus.OK);
@@ -35,7 +37,7 @@ public class SaleController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Sale>> list() {
 
         try {
@@ -59,7 +61,7 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Sale> update(@PathVariable(value = "id") int id, @RequestBody Sale obj) {
+    public ResponseEntity<Sale> update(@PathVariable(value = "id") int id, @Valid @RequestBody Sale obj) {
 
         try {
             Optional<Sale> Sale = dao.findById(id);
