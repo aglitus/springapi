@@ -3,6 +3,7 @@ package com.aglitus.springapi.pojo;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -27,6 +28,7 @@ public class Category {
     @Column(length = 150, nullable = false)
  	private String description;
 
+    @JsonIgnore
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
     

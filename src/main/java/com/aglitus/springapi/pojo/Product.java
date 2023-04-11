@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -47,6 +48,7 @@ public class Product {
 	@JoinColumn(name = "provider_id")
 	private Provider provider;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	private List<ProductSale> products_sales;
 

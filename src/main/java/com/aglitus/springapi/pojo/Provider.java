@@ -3,6 +3,7 @@ package com.aglitus.springapi.pojo;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -40,6 +41,7 @@ public class Provider {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "provider")
     private List<Product> products;
 }

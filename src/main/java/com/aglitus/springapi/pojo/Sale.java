@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -37,6 +38,7 @@ public class Sale {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate saleDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "sale")
     private List<ProductSale> products_sales;
 

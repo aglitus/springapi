@@ -3,6 +3,7 @@ package com.aglitus.springapi.pojo;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -30,9 +31,11 @@ public class City {
     @NotBlank(message = "State is mandatory")
     private String state;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<Provider> providers;
 
