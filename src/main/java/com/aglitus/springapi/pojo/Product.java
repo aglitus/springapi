@@ -3,8 +3,9 @@ package com.aglitus.springapi.pojo;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "products")
-
+@JsonIdentityInfo(scope = Product.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
 
 	@Id
@@ -38,17 +39,14 @@ public class Product {
 	@Column(length = 300)
 	private String image;
 
-	@JsonBackReference(value="category-product")
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@JsonBackReference(value="provider-product")
 	@ManyToOne
 	@JoinColumn(name = "provider_id")
 	private Provider provider;
 
-    @JsonManagedReference(value="product-products_sales")
 	@OneToMany(mappedBy = "product")
 	private List<ProductSale> products_sales;
 

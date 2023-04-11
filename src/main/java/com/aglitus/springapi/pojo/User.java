@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(scope = User.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
     @Id
@@ -64,15 +65,12 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "userType_id")
-    @JsonBackReference(value = "userType-user")
     private UserType userType;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference(value="user-city")
     private City city;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference(value="sale-user")
     private List<Sale> sales;
 }

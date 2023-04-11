@@ -2,7 +2,8 @@ package com.aglitus.springapi.pojo;
 
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "products_sales")
+@JsonIdentityInfo(scope = ProductSale.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ProductSale {
 
     @Id
@@ -23,12 +25,10 @@ public class ProductSale {
 
     @ManyToOne
     @JoinColumn(name = "id_product")
-    @JsonBackReference(value="product-products_sales")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "sale_id")
-    @JsonBackReference(value="sale-products_sales")
     private Sale sale;
 
     @Column(nullable = false)

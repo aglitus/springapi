@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "sales")
+@JsonIdentityInfo(scope = Sale.class ,generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Sale {
 
     @Id
@@ -30,7 +31,6 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference(value="sale-user")
     private User user;
 
     @Column(nullable = false, columnDefinition = "DATE")
@@ -38,7 +38,6 @@ public class Sale {
     private LocalDate saleDate;
 
     @OneToMany(mappedBy = "sale")
-    @JsonManagedReference(value="sale-products_sales")
     private List<ProductSale> products_sales;
 
 }
