@@ -5,6 +5,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -25,6 +26,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.aglitus.springapi.service.JpaUserDetails;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
 @Configuration
@@ -34,27 +36,24 @@ public class SecurityConfig {
     @Value("${jwt.key}")
     private String jwtKey;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("dvega")
-                        .password("{noop}password")
-                        .authorities("READ","ROLE_USER")
-                        .build());
+    private final JpaUserDetails jpa;
+
+    public SecurityConfig(JpaUserDetails jpa){
+        this.jpa = jpa;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( auth -> auth
-                        .requestMatchers("/user/login").hasRole("USER")
-                        .anyRequest().hasAuthority("SCOPE_READ")
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .httpBasic(Customizer.withDefaults())
-                .build();
+
+        return http.csrf().disable()
+        .authorizeHttpRequests( auth -> auth
+        .requestMatchers(HttpMethod.POST,"/user").permitAll()
+                    .anyRequest().authenticated())
+        .userDetailsService(jpa)
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+        .httpBasic(Customizer.withDefaults())
+        .build();
     }
 
     @Bean
@@ -67,6 +66,11 @@ public class SecurityConfig {
         byte[] bytes = jwtKey.getBytes();
         SecretKeySpec originalKey = new SecretKeySpec(bytes, 0, bytes.length,"RSA");
         return NimbusJwtDecoder.withSecretKey(originalKey).macAlgorithm(MacAlgorithm.HS512).build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
 }

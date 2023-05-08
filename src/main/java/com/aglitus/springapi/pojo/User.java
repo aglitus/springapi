@@ -1,10 +1,14 @@
 package com.aglitus.springapi.pojo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -24,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users")
 @JsonIdentityInfo(scope = User.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "id", unique = true)
@@ -47,9 +51,10 @@ public class User {
     @Column(length = 300, nullable = false)
     private String address;
 
+    
     @NotBlank(message = "User is mandatory")
     @Column(length = 100, nullable = false)
-    private String user;
+    private String username;
 
     @NotBlank(message = "Password is mandatory")
     @Column(length = 150, nullable = false)
@@ -75,4 +80,30 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Sale> sales;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
