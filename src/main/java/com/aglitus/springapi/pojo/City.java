@@ -2,7 +2,9 @@ package com.aglitus.springapi.pojo;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "cities")
+@JsonIdentityInfo(scope = City.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class City {
 
     @Id
@@ -28,12 +31,12 @@ public class City {
     @NotBlank(message = "State is mandatory")
     private String state;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference(value="user-city")
     private List<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference(value="provider-city")
     private List<Provider> providers;
 
 }
