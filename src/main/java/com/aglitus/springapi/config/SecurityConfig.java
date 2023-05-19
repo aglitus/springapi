@@ -45,10 +45,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        return http.csrf().disable()
-        .authorizeHttpRequests( auth -> auth
+        return http.cors().and().csrf().disable()
+        .authorizeHttpRequests(auth -> auth
         .requestMatchers(HttpMethod.POST,"/user").permitAll()
-                    .anyRequest().authenticated())
+        .requestMatchers(HttpMethod.GET,"/city").permitAll()
+        .requestMatchers(HttpMethod.GET, "product/image/{name}").permitAll()
+        .anyRequest().authenticated())
         .userDetailsService(jpa)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

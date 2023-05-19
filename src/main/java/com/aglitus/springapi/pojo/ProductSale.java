@@ -31,7 +31,4 @@ public class ProductSale {
     @JoinColumn(name = "sale_id")
     private Sale sale;
 
-    @Column(nullable = false)
-    private BigDecimal totalPrice;
-
 }
