@@ -155,4 +155,23 @@ public class ProductController {
         return entity;
     }
 
+    @GetMapping("/removeStock/{id}/{quantity}")
+    public ResponseEntity<Product> removeStock(@PathVariable(value = "id") int id, @PathVariable(value = "quantity") int quantity){
+        try {
+
+            Optional<Product> repoProduct = dao.findById(id);
+
+            Product product = repoProduct.get();
+
+            product.setQuantity((product.getQuantity()) - quantity);
+
+            return new ResponseEntity<Product>(dao.save(product), HttpStatus.OK);
+
+        } catch (Exception e){
+
+            return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 }
