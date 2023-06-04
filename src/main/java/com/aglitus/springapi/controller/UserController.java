@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.aglitus.springapi.dao.UserDAO;
+import com.aglitus.springapi.dto.LoginDTO;
 import com.aglitus.springapi.pojo.User;
 import com.aglitus.springapi.service.TokenService;
 
@@ -112,13 +113,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String token(Authentication authentication){
+    public ResponseEntity<LoginDTO> token(Authentication authentication){
 
-        try {
-            return tokenService.generateToken(authentication);
-        } catch (Exception e){
-            return e.getMessage();
-        }
-        
+        LoginDTO dto = new LoginDTO(authentication.getPrincipal(), tokenService.generateToken(authentication));
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+
     }
 }
